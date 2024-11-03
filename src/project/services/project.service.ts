@@ -57,8 +57,6 @@ export class ProjectService {
     }
   }
   async deleteProjectImage(imageUuid: string) {
-    console.log('imageUuid', imageUuid);
-
     try {
       const picture = await this.projectImageRepository.delete({
         uuid: imageUuid,
