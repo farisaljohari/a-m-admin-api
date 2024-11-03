@@ -13,7 +13,7 @@ import { ProjectService } from '../services/project.service';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 // import { JwtAuthGuard } from '../../../libs/common/src/guards/jwt.auth.guard';
 import { EnableDisableStatusEnum } from '@app/common/constants/days.enum';
-import { AddProjectDto, AddProjectImageDto, UpdateProjectDto } from '../dtos';
+import { AddProjectDto, AddProjectImageDto } from '../dtos';
 
 @ApiTags('Project Module')
 @Controller({
@@ -86,7 +86,7 @@ export class ProjectController {
   @Put(':projectUuid')
   async updateProject(
     @Param('projectUuid') projectUuid: string,
-    @Body() updateProjectDto: UpdateProjectDto,
+    @Body() updateProjectDto: AddProjectDto,
   ) {
     const picture = await this.projectService.updateProject(
       projectUuid,

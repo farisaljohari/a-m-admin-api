@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { AddProjectDto, AddProjectImageDto, UpdateProjectDto } from '../dtos';
+import { AddProjectDto, AddProjectImageDto } from '../dtos';
 import {
   ProjectImageRepository,
   ProjectRepository,
@@ -134,17 +134,24 @@ export class ProjectService {
       }
     }
   }
-  async updateProject(projectUuid: string, updateProjectDto: UpdateProjectDto) {
+  async updateProject(projectUuid: string, updateProjectDto: AddProjectDto) {
     try {
-      const pictures = await this.projectRepository.update(
-        { uuid: projectUuid },
-        {
-          title: updateProjectDto.title,
-          location: updateProjectDto.location,
-        },
-      );
+      // Step 1: Use addProject to create a new project
+      const newProject = await this.addProject(updateProjectDto);
 
-      return pictures;
+      // Step 2: Check if the new project was created successfully
+      if (newProject.uuid) {
+        // Step 3: Delete the old project
+        await this.projectRepository.delete({ uuid: projectUuid });
+
+        // Optional: Return the newly created project
+        return newProject;
+      } else {
+        throw new HttpException(
+          'New project was not created successfully.',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     } catch (error) {
       throw new HttpException(
         error.message || 'Error While Updating Project',

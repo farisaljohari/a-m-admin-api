@@ -37,20 +37,3 @@ export class AddProjectImageDto {
   @IsNotEmpty({ each: true }) // Ensure each image in the array is not empty
   public images: string[]; // Array of Base64 strings
 }
-export class UpdateProjectDto {
-  @ApiProperty({
-    description: 'title',
-    required: true,
-  })
-  @IsString()
-  @IsNotEmpty()
-  public title: string;
-
-  @ApiProperty({
-    description: 'location',
-    required: true,
-  })
-  @IsString()
-  @IsNotEmpty()
-  public location: string;
-}
