@@ -7,11 +7,11 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
+  // UseGuards,
 } from '@nestjs/common';
 import { ProjectService } from '../services/project.service';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../../../libs/common/src/guards/jwt.auth.guard';
+// import { JwtAuthGuard } from '../../../libs/common/src/guards/jwt.auth.guard';
 import { EnableDisableStatusEnum } from '@app/common/constants/days.enum';
 import { AddProjectDto, AddProjectImageDto, UpdateProjectDto } from '../dtos';
 
@@ -24,7 +24,7 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('')
   async addProject(@Body() addProjectDto: AddProjectDto) {
     const project = await this.projectService.addProject(addProjectDto);
@@ -37,13 +37,13 @@ export class ProjectController {
     };
   }
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   async getAllProjects() {
     return await this.projectService.getAllProjects();
   }
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete('image/:imageUuid')
   async deleteProjectImage(@Param('imageUuid') imageUuid: string) {
     await this.projectService.deleteProjectImage(imageUuid);
@@ -53,7 +53,7 @@ export class ProjectController {
     };
   }
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete('/:projectUuid')
   async deleteProject(@Param('projectUuid') projectUuid: string) {
     await this.projectService.deleteProject(projectUuid);
@@ -63,7 +63,7 @@ export class ProjectController {
     };
   }
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('image/:projectUuid')
   async addProjectImage(
     @Param('projectUuid') projectUuid: string,
@@ -76,13 +76,13 @@ export class ProjectController {
     };
   }
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(':projectUuid')
   async getProjectByUuid(@Param('projectUuid') projectUuid: string) {
     return await this.projectService.getProjectByUuid(projectUuid);
   }
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Put(':projectUuid')
   async updateProject(
     @Param('projectUuid') projectUuid: string,
