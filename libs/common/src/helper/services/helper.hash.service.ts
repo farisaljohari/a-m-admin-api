@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import { AES, enc, mode, pad, SHA256 } from 'crypto-js';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class HelperHashService {
@@ -59,5 +60,8 @@ export class HelperHashService {
     });
 
     return cipher.toString(enc.Utf8);
+  }
+  async compare(plaintext: string, hashed: string): Promise<boolean> {
+    return await bcrypt.compare(plaintext, hashed);
   }
 }

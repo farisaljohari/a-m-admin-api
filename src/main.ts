@@ -6,6 +6,7 @@ import { setupSwaggerAuthentication } from '../libs/common/src/util/user-auth.sw
 import { ValidationPipe } from '@nestjs/common';
 import { json, urlencoded } from 'body-parser';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
+import { SeederService } from '@app/common/seed/services/seeder.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -41,6 +42,13 @@ async function bootstrap() {
     }),
   );
 
+  const seederService = app.get(SeederService);
+  try {
+    await seederService.seed();
+    console.log('Seeding complete!');
+  } catch (error) {
+    console.error('Seeding failed!', error);
+  }
   console.log('Starting auth at port ...', process.env.PORT || 4000);
   await app.listen(process.env.PORT || 4000);
 }
