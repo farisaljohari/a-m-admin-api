@@ -13,9 +13,9 @@ async function bootstrap() {
 
   app.enableCors();
 
-  // Set the body parser limit to 1 MB
-  app.use(json({ limit: '1mb' }));
-  app.use(urlencoded({ limit: '1mb', extended: true }));
+  // Set the body parser limit to a higher value (e.g., 5 MB)
+  app.use(json({ limit: '5mb' })); // Adjust as needed
+  app.use(urlencoded({ limit: '5mb', extended: true })); // Adjust as needed
   app.useGlobalFilters(new HttpExceptionFilter());
 
   app.use(
