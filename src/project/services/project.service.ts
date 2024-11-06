@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { AddProjectDto, AddProjectImageDto } from '../dtos';
+import { AddProjectDto, AddProjectImageDto, PaginationDto } from '../dtos';
 import {
   ProjectImageRepository,
   ProjectRepository,
@@ -16,18 +16,29 @@ export class ProjectService {
     private readonly projectRepository: ProjectRepository,
     private readonly projectImageRepository: ProjectImageRepository,
   ) {}
-  async getAllProjects() {
+  async getAllProjects(paginationDto: PaginationDto) {
+    const { page, limit } = paginationDto;
+    const skip = (page - 1) * limit;
+
     try {
-      const projects = await this.projectRepository.find({
+      const [projects, total] = await this.projectRepository.findAndCount({
         relations: ['images'],
+        skip,
+        take: limit,
       });
 
-      return projects;
+      return {
+        data: projects,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      };
     } catch (err) {
       if (err instanceof BadRequestException) {
-        throw err; // Re-throw BadRequestException
+        throw err;
       } else {
-        throw new HttpException('projects not found', HttpStatus.NOT_FOUND);
+        throw new HttpException('Projects not found', HttpStatus.NOT_FOUND);
       }
     }
   }

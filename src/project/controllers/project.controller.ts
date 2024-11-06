@@ -7,13 +7,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
   // UseGuards,
 } from '@nestjs/common';
 import { ProjectService } from '../services/project.service';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 // import { JwtAuthGuard } from '../../../libs/common/src/guards/jwt.auth.guard';
 import { EnableDisableStatusEnum } from '@app/common/constants/days.enum';
-import { AddProjectDto, AddProjectImageDto } from '../dtos';
+import { AddProjectDto, AddProjectImageDto, PaginationDto } from '../dtos';
 
 @ApiTags('Project Module')
 @Controller({
@@ -39,8 +40,8 @@ export class ProjectController {
   @ApiBearerAuth()
   // @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllProjects() {
-    return await this.projectService.getAllProjects();
+  async getAllProjects(@Query() paginationDto: PaginationDto) {
+    return await this.projectService.getAllProjects(paginationDto);
   }
   @ApiBearerAuth()
   // @UseGuards(JwtAuthGuard)
