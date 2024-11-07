@@ -153,7 +153,7 @@ export class ProjectService {
       // Step 2: Check if the new project was created successfully
       if (newProject.uuid) {
         // Step 3: Delete the old project
-        await this.projectRepository.delete({ uuid: projectUuid });
+        await this.deleteProject(projectUuid);
 
         // Optional: Return the newly created project
         return newProject;
